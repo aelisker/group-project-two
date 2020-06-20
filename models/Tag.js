@@ -20,6 +20,8 @@ Tag.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
+    createdAt: false,
+    updatedAt: false,
     modelName: 'tag'
   }
 );

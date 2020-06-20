@@ -26,6 +26,10 @@ User.init(
       validate: {
         len: [6]
       }
+    },
+    dark_mode: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   },
   {

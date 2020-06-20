@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const { User, Note, Tag, NoteTag } = require('../../models');
 const isAuth = require('../../utils/middleware/isAuth');
+const passport = require('../../utils/passport');
+const e = require('express');
+const { json } = require('body-parser');
 
 router.get('/', (req, res) => {
   Note.findAll({
@@ -23,12 +26,11 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
+router.post('/', isAuth, (req, res) => {
   Note.create({
     title: req.body.title,
     note_content: req.body.note_content,
-    //user_id: req.session.user_id,
-    user_id: req.body.user_id,
+    user_id: req.session.passport.user.id,
     tagIds: req.body.tag_id,
   })
   .then((note) => {
@@ -46,6 +48,25 @@ router.post('/', (req, res) => {
   .catch((err) => {
     console.log(err);
     res.status(400).json(err);
+  });
+});
+
+router.delete('/:id', isAuth, (req, res) => {
+  Note.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbNoteData => {
+    if (!dbNoteData) {
+      res.status(404).json({ message: 'No note found with this ID' });
+      return;
+    }
+    res.json(dbNoteData);
+  })
+  .catch((err) => {
+    console.log(err);
+    json.status(500).json(err);
   });
 });
 
