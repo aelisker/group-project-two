@@ -20,11 +20,20 @@ router.get('/', (req, res) => {
 //   })
 // })
 
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true 
-  })
+router.post('/login', passport.authenticate
+  ('local'
+  // , {
+  //   successRedirect: '/',
+  //   failureRedirect: '/login',
+  //   failureFlash: true 
+  //   }
+  )
+  , (req, res) => {
+    res.json({
+      username: req.body.username,
+      password: req.body.password
+    })
+  }
 );
 
 router.post('/', (req, res) => {
