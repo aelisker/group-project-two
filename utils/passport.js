@@ -3,7 +3,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 
-// documentation: http://www.passportjs.org/docs/username-password/ and https://dev.to/gm456742/building-a-nodejs-web-app-using-passportjs-for-authentication-3ge2
+// documentation: http://www.passportjs.org/docs/username-password/
+// Joey was key in getting this to work - previously would not wait for promise of validatePassword function
 passport.use(new LocalStrategy(
   async function(username, password, done) {
     let dbUser = await User.findOne({
