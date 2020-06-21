@@ -16,20 +16,26 @@ router.get('/', (req, res) => {
 
 router.post('/login', passport.authenticate
   ('local'
-  // , {
-  //   successRedirect: '/',
-  //   failureRedirect: '/login',
-  //   failureFlash: true 
-  //   }
+  , {
+    successRedirect: '/',
+    failureRedirect: '/login'
+    // failureFlash: true 
+    }
   )
-  , (req, res) => {
-    res.json({
-      username: req.body.username,
-      loggedIn: true,
-      user_passport_obj: req.session.passport.user,
-    })
-  }
+  // , (req, res) => {
+  //   res.json({
+  //     username: req.body.username,
+  //     loggedIn: true,
+  //     user_passport_obj: req.session.passport.user,
+  //   })
+  // }
 );
+
+router.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    res.redirect('/');
+  })
+});
 
 router.post('/', (req, res) => {
   User.create({
@@ -54,8 +60,35 @@ router.post('/', (req, res) => {
   // });
 });
 
-router.put('/', isAuth, (req, res) => {
-  User.update(req.body, {
+// router.put('/', isAuth, (req, res) => {
+//   User.update(req.body, {
+//     where: {
+//       id: req.session.passport.user.id
+//     }
+//   })
+//   .then(dbUserData => {
+//     if (!dbUserData[0]) {
+//       res.status(404).json({ message: 'No user found with this id' });
+//       return;
+//     }
+//     req.logIn(req.session.passport.user, function(error) {
+//       if (!error) {
+//           // successfully serialized user to session
+//       }
+//       res.json(dbUserData);
+//     })
+//   })
+//   .catch(err => {
+//     console.log(err);
+//     res.status(500).json(err);
+//   });
+// });
+
+router.put('/dmon', isAuth, (req, res) => {
+  User.update({
+    dark_mode: true
+  }, 
+  {
     where: {
       id: req.session.passport.user.id
     }
@@ -65,7 +98,41 @@ router.put('/', isAuth, (req, res) => {
       res.status(404).json({ message: 'No user found with this id' });
       return;
     }
-    res.json(dbUserData);
+    req.session.darkMode = true;
+    req.logIn(req.session.passport.user, function(error) {
+      if (!error) {
+          // successfully serialized user to session
+      }
+      res.json(dbUserData);
+    })
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
+});
+
+router.put('/dmoff', isAuth, (req, res) => {
+  User.update({
+    dark_mode: false
+  }, 
+  {
+    where: {
+      id: req.session.passport.user.id
+    }
+  })
+  .then(dbUserData => {
+    if (!dbUserData[0]) {
+      res.status(404).json({ message: 'No user found with this id' });
+      return;
+    }
+    req.session.darkMode = false;
+    req.logIn(req.session.passport.user, function(error) {
+      if (!error) {
+          // successfully serialized user to session
+      }
+      res.json(dbUserData);
+    })
   })
   .catch(err => {
     console.log(err);

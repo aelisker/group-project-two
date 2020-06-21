@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remote Notes</title>
+  {{#if darkMode}}
+  <link rel="stylesheet" href="/stylesheets/bootstrap.darkly.min.css">
+  {{/if}}
+  {{#unless darkMode}}
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+  {{/unless}}
+  {{!-- <link rel="stylesheet" href="/stylesheets/style.css"> --}}
+</head>
+
+<body>
+  <div class="container-fluid">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-dark mb-2">
+        <h3> 
+          <a class="navbar-brand text-white" href="/">Remote Notes</a>
+        </h3>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            {{#if loggedInId}}
+            <li class="nav-item mr-2">
+              <a class="nav-link text-white" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item mr-2">
+              <a class="nav-link btn btn-success text-white  my-2 my-sm-0" role="button" href="/dashboard/create-post">New note</a>
+            </li>
+            <li class="nav-item">
+              <button id="logout" class="btn btn-outline-danger my-2 my-sm-0">Logout</button>
+            </li>
+            {{#if darkMode}}
+            <li class="nav-item">
+              <button id="dark-mode-off" class="btn btn-outline-danger my-2 my-sm-0">Dark Mode Off</button>
+            </li>
+            {{/if}}
+            {{#unless darkMode}}
+            <li class="nav-item">
+              <button id="dark-mode-on" class="btn btn-outline-danger my-2 my-sm-0">Dark Mode On</button>
+            </li>
+            {{/unless}}
+            {{else}}
+            <li class="nav-item">
+              <a class="nav-link btn btn-primary text-white my-2 my-sm-0" role="button" href="/login">Login</a>
+            </li>
+            {{/if}}
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      {{{ body }}}
+    </main>
+
+    {{#if darkMode}}
+    dark mode on
+    {{/if}}
+
+    {{#unless darkMode}}
+    dark mode off
+    {{/unless}}
+  </div>
+
+  {{#if loggedInId}}
+    <script src="/javascript/logout.js"></script>
+    {{#if darkMode}}
+      <script src="/javascript/darkModeOff.js"></script>
+    {{/if}}
+    {{#unless darkMode}}
+      <script src="/javascript/darkModeOn.js"></script>
+    {{/unless}}
+  {{/if}}
+  <script src="/javascript/jquery-3.5.1.slim.min.js"></script>
+  <script src="/javascript/popper.min.js"></script>
+  <script src="/javascript/bootstrap.min.js"></script>
+</body>
+</html>

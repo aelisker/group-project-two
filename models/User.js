@@ -3,9 +3,38 @@ const sequelize = require('../config/connection');
 const bcrypt = require('bcrypt');
 
 class User extends Model {
-  passwordValidation(password) {
-    return bcrypt.compare(password, this.password);
+  validatePassword(loginPw) {
+    console.log('loginPW', loginPw);
+    console.log('hashedPW', this.password);
+    console.log(bcrypt.compare(loginPw, this.password));
+    // return bcrypt.compare(loginPw, this.password);
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(loginPw, this.password)
+      .then((res) => {
+        console.log('Comparison was ' + res)
+        console.log(res);
+        // let response = res;
+        // return response;
+        resolve(res);
+        // return res;
+      })
+      // resolve(res);
+    })   
   }
+
+  // return new Promise((resolve, reject) => {
+  //   return connection.query(sql, (err, row) => {
+  //     if (err) {
+  //       console.log(`Error: ${err}`);
+  //       return reject(err);
+  //     }
+  //     const roleArr = [];
+  //     row.forEach(role => {
+  //       roleArr.push(role.title);
+  //     });
+  //     resolve(roleArr);
+  //   });
+  // })
 }
 
 User.init(
@@ -34,9 +63,13 @@ User.init(
   },
   {
     hooks: {
-      async beforeCreate(user) {
-        user.password = await bcrypt.hash(user.password, 10);
-        return user;
+      async beforeCreate(newUser) {
+        newUser.password = await bcrypt.hash(newUser.password, 10);
+        return newUser;
+      },
+      async beforeUpdate(existingUser) {
+        existingUser.password = await bcrypt.hash(existingUser.password, 10);
+        return existingUser;
       }
     },
     sequelize,
