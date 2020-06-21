@@ -14,22 +14,27 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/login', passport.authenticate
-  ('local'
-  , {
-    successRedirect: '/',
-    failureRedirect: '/login'
-    // failureFlash: true 
-    }
-  )
-  // , (req, res) => {
-  //   res.json({
-  //     username: req.body.username,
-  //     loggedIn: true,
-  //     user_passport_obj: req.session.passport.user,
-  //   })
-  // }
-);
+// router.post('/login', passport.authenticate
+//   ('local'
+//   , {
+//     successRedirect: '/',
+//     failureRedirect: '/login'
+//     // failureFlash: true 
+//     }
+//   )
+//   // , (req, res) => {
+//   //   res.json({
+//   //     username: req.body.username,
+//   //     loggedIn: true,
+//   //     user_passport_obj: req.session.passport.user,
+//   //   })
+//   // }
+// );
+
+router.post('/login', passport.authenticate('local'), function(req, res) {
+  console.log('PASSPORT GOES HERE', req.session.passport);
+  res.redirect('/');
+});
 
 router.get('/logout', (req, res) => {
   req.session.destroy((err) => {
