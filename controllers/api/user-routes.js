@@ -14,23 +14,6 @@ router.get('/', (req, res) => {
   });
 });
 
-// router.post('/login', passport.authenticate
-//   ('local'
-//   , {
-//     successRedirect: '/',
-//     failureRedirect: '/login'
-//     // failureFlash: true 
-//     }
-//   )
-//   // , (req, res) => {
-//   //   res.json({
-//   //     username: req.body.username,
-//   //     loggedIn: true,
-//   //     user_passport_obj: req.session.passport.user,
-//   //   })
-//   // }
-// );
-
 router.post('/login', passport.authenticate('local'), function(req, res) {
   console.log('PASSPORT GOES HERE', req.session.passport);
   res.redirect('/');
@@ -55,39 +38,7 @@ router.post('/', (req, res) => {
     console.log(err);
     res.status(500).json(err);
   })
-  //   req.session.save(() => {
-  //     req.session.user_id = dbUserData.id;
-  //     req.session.usename = dbUserData.usename;
-  //     req.session.loggedIn = true;
-
-  //     res.json(dbUserData);
-  //   });
-  // });
 });
-
-// router.put('/', isAuth, (req, res) => {
-//   User.update(req.body, {
-//     where: {
-//       id: req.session.passport.user.id
-//     }
-//   })
-//   .then(dbUserData => {
-//     if (!dbUserData[0]) {
-//       res.status(404).json({ message: 'No user found with this id' });
-//       return;
-//     }
-//     req.logIn(req.session.passport.user, function(error) {
-//       if (!error) {
-//           // successfully serialized user to session
-//       }
-//       res.json(dbUserData);
-//     })
-//   })
-//   .catch(err => {
-//     console.log(err);
-//     res.status(500).json(err);
-//   });
-// });
 
 router.put('/dmon', isAuth, (req, res) => {
   User.update({
