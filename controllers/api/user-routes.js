@@ -16,7 +16,10 @@ router.get('/', (req, res) => {
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
   console.log('PASSPORT GOES HERE', req.session.passport);
-  res.redirect('/');
+  // res.redirect('/');
+  res.render('homepage', {
+    loggedInId: req.session.passport.user.id,
+  });
 });
 
 router.get('/logout', (req, res) => {

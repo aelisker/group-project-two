@@ -19,6 +19,14 @@ Note.belongsToMany(Tag, {
 Tag.belongsToMany(Note, {
   through: NoteTag,
   foreignKey: 'tag_id'
-})
+});
+
+User.hasMany(Tag, {
+  foreignKey: 'user_id'
+});
+
+Tag.belongsTo(User, {
+  foreignKey: 'user_id'
+});
 
 module.exports = { User, Note, Tag, NoteTag };

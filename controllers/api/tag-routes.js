@@ -22,7 +22,8 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   Tag.create({
-    tag_name: req.body.tag_name
+    tag_name: req.body.tag_name,
+    user_id: req.session.passport.user.id
   })
   .then(dbTagData => res.json(dbTagData))
   .catch((err) => {

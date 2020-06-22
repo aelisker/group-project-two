@@ -34,13 +34,15 @@ router.post('/', isAuth, (req, res) => {
     tagIds: req.body.tag_id,
   })
   .then((note) => {
-    if (req.body.tagIds.length) {
-      const NoteTagIdArr = req.body.tagIds.map((tag_id) => {
-        return {
-          note_id: note.id, tag_id,
-        };
-      });
-      return NoteTag.bulkCreate(NoteTagIdArr);
+    if (typeof req.body.tagIds != 'undefined') {
+      if (req.body.tagIds.length) {
+        const NoteTagIdArr = req.body.tagIds.map((tag_id) => {
+          return {
+            note_id: note.id, tag_id,
+          };
+        });
+        return NoteTag.bulkCreate(NoteTagIdArr);
+      }
     }
     res.status(200).json(note);
   })
